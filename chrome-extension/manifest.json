@@ -2,8 +2,9 @@
   "manifest_version": 3,
   "name": "Orbit Music — Spotify & Ad Shield",
   "short_name": "Orbit Music",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Open Spotify and block common advertising and tracking requests from one Chrome extension.",
+  "key": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA0vKrtvpjD4a1ac3FRDQ+TdKYEwBhounIYTLqyehWZbFJElLZ2jx2RnD6Ll2aqux5JkhgNM1YSacdL9p4Jd7CTlGLTZGeVKyM9dK8jlJciDaqn2KfKc77tlqjOC8n1LZwFYvkcoKN9KyRvbGXZtZQcwBMHksXCYDlubRDBiShMlKRIvcUt5rvUUuJ8nvXIMSnYoddDBeJ/z7NwHqZx51L5lNpEWyLxTEUr1ncL5tfON9JUIR4v06TAOb6tWyXPV8tqkEoV8RccdtwbiqJ1H7G8qyPLBuq3UKgHHofabP59eptYRdrl9RCn3PfNJQLTkhe1DdP5MTuNWqcDJ0qC8fA0QIDAQAB",
   "permissions": [
     "storage",
     "declarativeNetRequest"
@@ -11,6 +12,11 @@
   "host_permissions": [
     "https://open.spotify.com/*"
   ],
+  "externally_connectable": {
+    "matches": [
+      "https://hightechmit.github.io/*"
+    ]
+  },
   "action": {
     "default_title": "Orbit Music",
     "default_popup": "popup.html"
