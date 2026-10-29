@@ -78,10 +78,12 @@ footer{color:#829087;font-size:.77rem;line-height:1.5;padding:20px 4px 0}
 
 <section class="section">
   <h3>Ad filtering on your phone</h3>
-  <p>Orbit is a Home Screen web app, so iOS does not let it change your phone's network settings or filter traffic from other apps directly.</p>
-  <p>For optional system-wide domain filtering, you can set up a DNS filtering profile from AdGuard's official public DNS page. This does not require a Chrome extension, but it changes DNS settings for your device and may conflict with some VPN configurations.</p>
+  <p>Orbit's Home Screen website cannot change iOS settings or block traffic by itself. For real Safari ad blocking, Orbit now includes source code for a native iOS app with a Safari Content Blocker extension.</p>
+  <a class="link primary" href="https://github.com/HighTechMIT/orbit-music/tree/main/ios-app" target="_blank" rel="noopener noreferrer">Get Orbit's iOS Safari blocker source ↗</a>
+  <p class="muted">The native app must be built and signed with Xcode, installed on your iPhone, and enabled under Settings → Apps → Safari → Extensions. The GitHub website cannot install or enable the extension by itself.</p>
+  <p>For optional DNS filtering instead, you can use AdGuard's official public DNS setup. This changes DNS settings for your device and may conflict with some VPN configurations.</p>
   <a class="link secondary" href="https://adguard-dns.io/en/public-dns.html" target="_blank" rel="noopener noreferrer">Set up iPhone DNS filtering ↗</a>
-  <div class="note"><strong>Spotify limitation:</strong> DNS filtering blocks some known ad and tracker domains. It cannot reliably remove Spotify's own audio ads, and Orbit's Home Screen switch cannot turn DNS filtering on or off for iOS.</div>
+  <div class="note"><strong>Spotify limitation:</strong> Safari content blocking can filter selected third-party requests while using Spotify Web Player in a Safari-powered view. It cannot filter the separate Spotify app or reliably remove Spotify's own audio ads.</div>
 </section>
 
 <section class="section">
