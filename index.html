@@ -13,7 +13,7 @@
 <section class="hero"><div class="eyebrow">Your music, one tap away</div><h2>Press play.<br>Stay in orbit.</h2><p>Open Spotify Web Player, jump to your Liked Songs, and—on desktop Chrome—control Orbit's built-in ad and tracker blocker from this page.</p><div class="actions"><button class="primary" id="openSpotify">▶ Open Spotify</button><button class="secondary" id="openSaved">Open saved destination</button></div><div class="status" id="launchStatus" role="status" aria-live="polite"></div></section>
 <section class="section"><h3>Ad blocker</h3><p>Use this switch to turn Orbit's Chrome extension blocking on or off without opening its popup.</p>
 <label class="toggle"><input id="adblock" type="checkbox"><span><strong>Enable ad and tracker blocking</strong><small>Full mode blocks a curated list of common third-party ad/tracker domains. It does not guarantee removal of Spotify's own audio ads.</small></span></label>
-<div class="actions" style="margin-top:10px"><button class="secondary" id="checkConnection" type="button">Check connection</button></div><div class="status" id="adblockStatus" role="status" aria-live="polite">Checking whether the Orbit Chrome extension is available…</div>
+<div class="status" id="adblockStatus" role="status" aria-live="polite">Ad blocker is ready. Turn the switch on to enable protection.</div>
 <div class="install-links"><a href="https://github.com/HighTechMIT/orbit-music/tree/main/chrome-extension" target="_blank" rel="noopener noreferrer">View / install Orbit Chrome extension</a><a href="https://github.com/HighTechMIT/orbit-music/archive/refs/heads/main.zip" target="_blank" rel="noopener noreferrer">Download repository ZIP</a></div>
 <div class="notice">Important: the GitHub page itself cannot block traffic from Spotify. This switch works only in desktop Chrome when the Orbit Music Chrome extension is installed. On iPhone/iPad Safari, a PWA cannot control a Chrome extension or block ads inside the Spotify app.</div>
 </section>
@@ -26,7 +26,6 @@
 <script>
 const $ = id => document.getElementById(id);
 const defaultUrl = "https://open.spotify.com/";
-const extensionId = "hfdjkgpaechklmlkbjdaidkabgmpafig";
 let lastKnownMode = null;
 
 function validSpotifyUrl(value) {
@@ -53,61 +52,53 @@ function openDestination(url) {
 
 function sendExtensionMessage(message) {
   return new Promise(resolve => {
-    if (!window.chrome || !chrome.runtime || typeof chrome.runtime.sendMessage !== "function") {
-      resolve({ ok: false, error: "Extension messaging is unavailable in this browser." });
-      return;
+    const requestId = `${Date.now()}-${Math.random().toString(16).slice(2)}`;
+    const timeout = window.setTimeout(() => {
+      window.removeEventListener("message", onMessage);
+      resolve({ ok: false, error: "Orbit's extension did not respond. Reload the updated extension in chrome://extensions." });
+    }, 2000);
+    function onMessage(event) {
+      if (event.source !== window || event.origin !== location.origin) return;
+      const data = event.data;
+      if (!data || data.source !== "orbit-music-extension" || data.direction !== "response" || data.id !== requestId) return;
+      window.clearTimeout(timeout);
+      window.removeEventListener("message", onMessage);
+      resolve(data.response || { ok: false, error: "Orbit extension returned no response." });
     }
-    try {
-      chrome.runtime.sendMessage(extensionId, message, response => {
-        const error = chrome.runtime.lastError;
-        if (error) resolve({ ok: false, error: error.message });
-        else resolve(response || { ok: false, error: "The Orbit extension did not respond." });
-      });
-    } catch (error) {
-      resolve({ ok: false, error: String(error) });
-    }
+    window.addEventListener("message", onMessage);
+    window.postMessage({
+      source: "orbit-music-page",
+      direction: "request",
+      id: requestId,
+      message
+    }, location.origin);
   });
 }
 
 function showExtensionUnavailable(error = "") {
   const isAppleMobile = /iPhone|iPad|iPod/i.test(navigator.userAgent);
-  $("adblock").disabled = true;
   if (isAppleMobile) {
-    $("adblockStatus").textContent = "This switch cannot control Chrome extensions on iPhone/iPad. The PWA alone cannot block Spotify ads.";
+    $("adblockStatus").textContent = "This switch only controls Orbit's desktop Chrome extension. It cannot block ads in iPhone Safari or the Spotify app.";
     return;
   }
-  let detail = "";
-  if (error.includes("Receiving end does not exist") || error.includes("Could not establish connection")) {
-    detail = " Chrome cannot reach the extension. Confirm Orbit is installed and enabled in this same Chrome profile, then reload it.";
-  } else if (error) {
-    detail = " Chrome reports: " + error;
-  } else if (!window.chrome || !window.chrome.runtime || typeof window.chrome.runtime.sendMessage !== "function") {
-    detail = " Chrome is not exposing extension messaging to this page.";
-  }
-  $("adblockStatus").textContent = "Orbit's desktop Chrome extension was not detected. Expected extension ID: hfdjkgpaechklmlkbjdaidkabgmpafig." + detail;
+  $("adblockStatus").textContent = error || "Orbit extension not responding. Update and reload the Orbit extension in chrome://extensions, then try the switch again.";
 }
 
 async function refreshAdBlockState() {
-  $("adblockStatus").textContent = "Checking connection to Orbit's Chrome extension…";
-  $("checkConnection").disabled = true;
-  $("checkConnection").textContent = "Checking…";
   const result = await sendExtensionMessage({ type: "orbit-get-mode" });
-  $("checkConnection").disabled = false;
-  $("checkConnection").textContent = "Check connection";
   if (!result.ok) {
     lastKnownMode = null;
     $("adblock").checked = false;
     showExtensionUnavailable(result.error || "");
     return;
   }
-  $("adblock").disabled = false;
   lastKnownMode = result.mode;
   $("adblock").checked = result.mode !== "off";
   $("adblockStatus").textContent = result.mode === "full"
-    ? "Ad and tracker blocking is ON (Full mode) in the Orbit Chrome extension."
+    ? "Ad and tracker blocking is ON."
     : result.mode === "lite"
-      ? "Lite blocking is ON in the Orbit Chrome extension. Turn this switch off and on to restore Full mode."
-      : "Ad and tracker blocking is OFF in the Orbit Chrome extension.";
+      ? "Lite ad and tracker blocking is ON."
+      : "Ad and tracker blocking is OFF.";
 }
 
 $("destination").value = localStorage.getItem("orbit-destination") || "";
@@ -136,8 +127,6 @@ $("auto").addEventListener("change", () => {
   localStorage.setItem("orbit-auto", $("auto").checked ? "true" : "false");
   $("launchStatus").textContent = $("auto").checked ? "Auto-open preference enabled." : "Auto-open preference disabled.";
 });
-$("checkConnection").addEventListener("click", refreshAdBlockState);
-$("adblock").disabled = true;
 $("adblock").addEventListener("change", async () => {
   const requestedMode = $("adblock").checked ? "full" : "off";
   $("adblockStatus").textContent = "Updating Orbit's ad blocker…";
@@ -147,7 +136,6 @@ $("adblock").addEventListener("change", async () => {
     showExtensionUnavailable(result.error || "");
     return;
   }
-  $("adblock").disabled = false;
   lastKnownMode = result.mode;
   $("adblock").checked = result.mode !== "off";
   $("adblockStatus").textContent = result.mode === "full"
