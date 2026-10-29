@@ -84,11 +84,16 @@ function showExtensionUnavailable(error = "") {
   } else if (!window.chrome || !window.chrome.runtime || typeof window.chrome.runtime.sendMessage !== "function") {
     detail = " Chrome is not exposing extension messaging to this page.";
   }
-  $("adblockStatus").textContent = "Orbit's desktop Chrome extension was not detected. Expected extension ID: ijoilohopmhojmjlhlegggjcomhcpmkm." + detail;
+  $("adblockStatus").textContent = "Orbit's desktop Chrome extension was not detected. Expected extension ID: hfdjkgpaechklmlkbjdaidkabgmpafig." + detail;
 }
 
 async function refreshAdBlockState() {
+  $("adblockStatus").textContent = "Checking connection to Orbit's Chrome extension…";
+  $("checkConnection").disabled = true;
+  $("checkConnection").textContent = "Checking…";
   const result = await sendExtensionMessage({ type: "orbit-get-mode" });
+  $("checkConnection").disabled = false;
+  $("checkConnection").textContent = "Check connection";
   if (!result.ok) {
     lastKnownMode = null;
     $("adblock").checked = false;
