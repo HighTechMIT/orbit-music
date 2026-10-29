@@ -30,3 +30,10 @@ Requirements: macOS 13 or newer and Xcode Command Line Tools (for swiftc).
 6. If Gatekeeper blocks this locally built unsigned app, Control-click it in Finder and choose Open. Only do this for source code you have reviewed and trust.
 
 The source is in Sources/OrbitMusicApp.swift. The app uses SwiftUI and the native macOS authorization prompt. No Chrome extension or Network Extension entitlement is required.
+
+
+## Download a prebuilt app
+
+The repository builds the app on a macOS runner. Open the [Build Orbit Music macOS App workflow](https://github.com/HighTechMIT/orbit-music/actions/workflows/build-macos-app.yml), choose the latest successful run, and download the artifact named **Orbit-Music-macOS**. Extract the downloaded ZIP once; it contains the **Orbit Music.app** bundle.
+
+Build artifacts are retained for 30 days. The app is not notarized, so macOS may require Control-click → Open on first launch.
