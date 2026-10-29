@@ -1,21 +1,31 @@
 # Orbit Music
 
-An installable Progressive Web App that opens Spotify Web Player and provides shortcuts to Liked Songs and Search.
+Orbit Music now has two related parts:
+- **Chrome extension (recommended for ad/tracker blocking):** one toolbar popup that launches Spotify and runs blocking rules in the background. No Voidy installation is required.
+- **PWA:** a standalone Spotify launcher published through GitHub Pages. A PWA cannot block requests made by other sites, so it cannot replace the extension for ad blocking.
 
-## Features
-- Open Spotify Web Player from one tap.
-- Quick links to Liked Songs and Spotify Search.
-- Optional launch preference (browser may still require a user gesture).
-- Installable app shell with offline caching for the interface only.
-- Preferences stored locally; no analytics or backend.
+## Install the combined Chrome extension
 
-## Important
-Orbit Music does not install or control the Voidy Chrome extension. Install Voidy separately in the same Chrome profile. Whether Spotify ads are blocked depends on Voidy's compatibility; this app does not bypass Spotify Premium restrictions or force playback.
+1. Download this repository using **Code → Download ZIP** and extract it.
+2. Open `chrome://extensions` in Chrome.
+3. Turn on **Developer mode**.
+4. Click **Load unpacked** and select the `chrome-extension` folder.
+5. Pin **Orbit Music — Spotify & Ad Shield** to the toolbar.
 
-## Publish with GitHub Pages
-1. In repository Settings → Pages, choose **GitHub Actions** as the build and deployment source.
-2. The workflow in `.github/workflows/pages.yml` deploys the repository to Pages on pushes to `main`.
-3. Wait for the workflow to finish, then open `https://HighTechMIT.github.io/orbit-music/` in Chrome.
-4. Use Chrome's install option to add Orbit Music as an app.
+The extension has Full, Lite, and Off modes, shortcuts to Spotify Liked Songs and Search, a saved Spotify destination, and an opt-in setting to open Spotify when Chrome starts.
 
-The app requires HTTPS (GitHub Pages provides it) for service workers and PWA installation.
+## Important limitations
+
+- Orbit Music does not use Voidy's source code and does not require the Voidy extension.
+- It blocks a curated list of common third-party ad/tracker domains and hides some clearly labeled ad placements on Spotify.
+- Spotify can serve audio ads through its own playback systems. Blocking those requests may break playback, so Orbit deliberately does not block Spotify's core playback/API domains. Complete Spotify in-stream ad removal is not guaranteed.
+- Full mode may break third-party widgets or analytics; switch to Lite or Off if a site stops working.
+- Settings stay in Chrome local storage; there is no analytics or browsing-history collection.
+
+## PWA version
+
+The PWA is published at `https://hightechmit.github.io/orbit-music/`. It can launch Spotify and provide shortcuts, but browsers isolate PWAs from other websites' network traffic. Use the Chrome extension for ad/tracker blocking.
+
+## GitHub Pages
+
+The `.github/workflows/pages.yml` workflow deploys the PWA when GitHub Pages is configured to use **GitHub Actions** as its source.
