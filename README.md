@@ -38,3 +38,8 @@ The extension has Full, Lite, and Off modes, shortcuts to Spotify Liked Songs an
 The PWA is published at `https://hightechmit.github.io/orbit-music/`. It can launch Spotify and provide shortcuts. A browser page cannot independently intercept another site's network traffic; ad blocking is performed by the Chrome extension.
 
 The `.github/workflows/pages.yml` workflow deploys the PWA when GitHub Pages is configured to use **GitHub Actions** as its source.
+
+
+## Standalone macOS app
+
+A separate native macOS version is available in [macos-app](./macos-app/). It launches Spotify and includes a system-wide hosts-file blocklist toggle, so it does not require a Chrome extension. See [macos-app/README.md](./macos-app/README.md) for local build instructions and limitations. Spotify audio-ad removal is not guaranteed.
