@@ -1,0 +1,47 @@
+{
+  "manifest_version": 3,
+  "name": "Orbit Music — Spotify & Ad Shield",
+  "short_name": "Orbit Music",
+  "version": "1.0.0",
+  "description": "Open Spotify and block common advertising and tracking requests from one Chrome extension.",
+  "permissions": [
+    "storage",
+    "declarativeNetRequest"
+  ],
+  "host_permissions": [
+    "https://open.spotify.com/*"
+  ],
+  "action": {
+    "default_title": "Orbit Music",
+    "default_popup": "popup.html"
+  },
+  "background": {
+    "service_worker": "background.js"
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "https://open.spotify.com/*"
+      ],
+      "js": [
+        "spotify-content.js"
+      ],
+      "run_at": "document_idle"
+    }
+  ],
+  "declarative_net_request": {
+    "rule_resources": [
+      {
+        "id": "orbit_core",
+        "enabled": false,
+        "path": "rules-core.json"
+      },
+      {
+        "id": "orbit_full",
+        "enabled": false,
+        "path": "rules-full.json"
+      }
+    ]
+  },
+  "minimum_chrome_version": "111"
+}
