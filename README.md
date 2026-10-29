@@ -1,45 +1,44 @@
 # Orbit Music
 
-Orbit Music has two related parts:
-- **PWA / GitHub Pages website:** a Spotify launcher with an **Ad Block** switch. In desktop Chrome, the switch can control the installed Orbit Chrome extension.
-- **Chrome extension:** performs the actual network ad/tracker blocking in the background. No Voidy installation is required.
+Orbit Music is a phone-first installable PWA that provides quick Spotify links and saves a playlist destination locally in your browser.
 
-## Use the Ad Block switch on the GitHub page
+## Open Orbit Music on your phone
 
-1. Install the Chrome extension using the steps below.
-2. Open the PWA at https://hightechmit.github.io/orbit-music/ in the **same desktop Chrome profile**.
-3. Use the **Enable ad and tracker blocking** switch. It sets the extension to Full or Off mode. There is no separate connection-check button.
-4. If the switch says the extension was not detected, reload the extension and refresh the website.
+Published app: https://hightechmit.github.io/orbit-music/
 
-The website toggle cannot block ads by itself. It only sends a message to the installed Chrome extension. It does not work from iPhone/iPad Safari or inside the Spotify app.
+### Install on iPhone
 
-## Install the combined Chrome extension
+1. Open the app link in Safari.
+2. Tap Share.
+3. Choose Add to Home Screen.
+4. If offered, enable Open as Web App, then tap Add.
 
-1. Download this repository using **Code → Download ZIP** and extract it.
-2. Open `chrome://extensions` in desktop Chrome.
-3. Turn on **Developer mode**.
-4. Click **Load unpacked** and select the `chrome-extension` folder.
-5. Pin **Orbit Music — Spotify & Ad Shield** to the toolbar.
+Orbit will appear on your Home Screen like an app. Spotify sign-in and music playback are handled by Spotify.
 
-If you already installed an earlier unpacked version, keep using the same extracted folder path. Replace/reload the extension from that same `chrome-extension` folder so Chrome keeps its path-based unpacked ID. The GitHub Pages switch is configured to communicate with the extension ID you supplied.
+### Install on Android
 
-The extension has Full, Lite, and Off modes, shortcuts to Spotify Liked Songs and Search, a saved Spotify destination, and an opt-in setting to open Spotify when Chrome starts.
+Open the app link in Chrome, open the browser menu, and choose Install app or Add to Home screen if offered.
 
-## Important limitations
+## Phone ad filtering
 
-- Orbit Music does not use Voidy's source code and does not require the Voidy extension.
-- It blocks a curated list of common third-party ad/tracker domains and hides some clearly labeled ad placements on Spotify.
-- Spotify can serve audio ads through its own playback systems. Blocking those requests may break playback, so Orbit deliberately does not block Spotify's core playback/API domains. Complete Spotify in-stream ad removal is not guaranteed.
-- Full mode may break third-party widgets or analytics; switch to Lite or Off if a site stops working.
-- Settings stay in Chrome local storage; there is no analytics or browsing-history collection.
+The PWA itself cannot intercept network traffic from other apps or change system DNS settings. On iPhone, the page includes a link to the official AdGuard DNS setup page for optional DNS-level filtering. That setup is separate from Orbit and requires the user to install and approve the DNS configuration in iOS Settings.
 
-## PWA and GitHub Pages
+DNS filtering can block selected ad and tracker domains, but cannot reliably remove Spotify's own audio ads. DNS profiles may also conflict with some VPN configurations.
 
-The PWA is published at `https://hightechmit.github.io/orbit-music/`. It can launch Spotify and provide shortcuts. A browser page cannot independently intercept another site's network traffic; ad blocking is performed by the Chrome extension.
+## Desktop extension
 
-The `.github/workflows/pages.yml` workflow deploys the PWA when GitHub Pages is configured to use **GitHub Actions** as its source.
+The repository still includes a Chrome extension in the chrome-extension folder for people who want Orbit's separate desktop browser-blocking features. The PWA no longer displays a desktop-extension toggle, because that control cannot function on iPhone or block traffic by itself.
 
+To install the extension in desktop Chrome:
+1. Download this repository ZIP and extract it.
+2. Open chrome://extensions.
+3. Enable Developer mode.
+4. Click Load unpacked and select the chrome-extension folder.
 
-## Standalone macOS app
+## Privacy
 
-A separate native macOS version is available in [macos-app](./macos-app/). It launches Spotify and includes a system-wide hosts-file blocklist toggle, so it does not require a Chrome extension. See [macos-app/README.md](./macos-app/README.md) for local build instructions and limitations. Spotify audio-ad removal is not guaranteed.
+Saved Spotify destinations are stored in local browser storage. Orbit has no analytics backend and does not collect browsing history.
+
+## Standalone macOS source
+
+The optional native macOS source remains in the macos-app folder. It is separate from the phone PWA and is not needed to use Orbit on a phone.
