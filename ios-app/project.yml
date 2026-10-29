@@ -1,0 +1,43 @@
+name: OrbitMusic
+options:
+  bundleIdPrefix: com.hightechmit.orbitmusic
+  deploymentTarget:
+    iOS: "16.0"
+settings:
+  base:
+    SWIFT_VERSION: "5.0"
+    IPHONEOS_DEPLOYMENT_TARGET: "16.0"
+    TARGETED_DEVICE_FAMILY: "1,2"
+    DEVELOPMENT_TEAM: ""
+targets:
+  OrbitMusic:
+    type: application
+    platform: iOS
+    sources:
+      - path: OrbitMusic
+    dependencies:
+      - target: OrbitSafariContentBlocker
+        embed: true
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.hightechmit.orbitmusic
+        PRODUCT_NAME: Orbit Music
+        GENERATE_INFOPLIST_FILE: YES
+        INFOPLIST_KEY_CFBundleDisplayName: Orbit Music
+        INFOPLIST_KEY_UIUserInterfaceStyle: Dark
+        CODE_SIGN_ENTITLEMENTS: OrbitMusic/OrbitMusic.entitlements
+        SWIFT_VERSION: "5.0"
+  OrbitSafariContentBlocker:
+    type: app-extension
+    platform: iOS
+    sources:
+      - path: OrbitSafariContentBlocker
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.hightechmit.orbitmusic.SafariContentBlocker
+        PRODUCT_NAME: Orbit Music Content Blocker
+        INFOPLIST_FILE: OrbitSafariContentBlocker/Info.plist
+        CODE_SIGN_ENTITLEMENTS: OrbitSafariContentBlocker/OrbitSafariContentBlocker.entitlements
+        SKIP_INSTALL: YES
+        APPLICATION_EXTENSION_API_ONLY: YES
+        SWIFT_VERSION: "5.0"
