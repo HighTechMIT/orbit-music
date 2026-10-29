@@ -1,0 +1,30 @@
+name: Build Orbit Music macOS App
+on:
+  push:
+    branches: ["main"]
+    paths:
+      - "macos-app/**"
+      - ".github/workflows/build-macos-app.yml"
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  build:
+    runs-on: macos-14
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Build app bundle
+        run: |
+          chmod +x macos-app/build-app.sh
+          CI=true ./macos-app/build-app.sh
+      - name: Package app
+        run: |
+          ditto -c -k --sequesterRsrc --keepParent "macos-app/build/Orbit Music.app" "Orbit-Music-macOS.zip"
+      - name: Upload app artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: Orbit-Music-macOS
+          path: Orbit-Music-macOS.zip
+          if-no-files-found: error
+          retention-days: 30
