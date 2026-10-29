@@ -1,8 +1,8 @@
 {
   "id": "./",
-  "name": "Orbit Music — YouTube Music Player",
+  "name": "Orbit Music — YouTube Music",
   "short_name": "Orbit Music",
-  "description": "A phone-friendly music PWA with an embedded alternative YouTube and YouTube Music audio player.",
+  "description": "A simple Home Screen launcher for the official YouTube Music website.",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",
