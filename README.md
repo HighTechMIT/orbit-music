@@ -8,7 +8,7 @@ Orbit Music has two related parts:
 
 1. Install the Chrome extension using the steps below.
 2. Open the PWA at https://hightechmit.github.io/orbit-music/ in the **same desktop Chrome profile**.
-3. Use the **Enable ad and tracker blocking** switch. It sets the extension to Full or Off mode.
+3. Use the **Enable ad and tracker blocking** switch. It sets the extension to Full or Off mode. There is no separate connection-check button.
 4. If the switch says the extension was not detected, reload the extension and refresh the website.
 
 The website toggle cannot block ads by itself. It only sends a message to the installed Chrome extension. It does not work from iPhone/iPad Safari or inside the Spotify app.
