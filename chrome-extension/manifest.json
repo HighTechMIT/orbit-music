@@ -32,6 +32,15 @@
         "spotify-content.js"
       ],
       "run_at": "document_idle"
+    },
+    {
+      "matches": [
+        "https://hightechmit.github.io/orbit-music/*"
+      ],
+      "js": [
+        "site-bridge.js"
+      ],
+      "run_at": "document_start"
     }
   ],
   "declarative_net_request": {
