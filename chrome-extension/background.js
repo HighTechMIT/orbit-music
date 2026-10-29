@@ -1,5 +1,6 @@
 const RULESETS = ["orbit_core", "orbit_full"];
 const VALID_MODES = ["full", "lite", "off"];
+const ALLOWED_WEB_ORIGIN = "https://hightechmit.github.io";
 
 async function applyMode(mode) {
   const safeMode = VALID_MODES.includes(mode) ? mode : "full";
@@ -17,6 +18,30 @@ function validSpotifyUrl(value) {
   } catch {
     return false;
   }
+}
+
+function isAllowedExternalSender(sender) {
+  try {
+    return new URL(sender.url).origin === ALLOWED_WEB_ORIGIN;
+  } catch {
+    return false;
+  }
+}
+
+function handleMessage(message, sendResponse) {
+  if (message?.type === "orbit-set-mode") {
+    applyMode(message.mode)
+      .then(mode => sendResponse({ ok: true, mode }))
+      .catch(error => sendResponse({ ok: false, error: String(error) }));
+    return true;
+  }
+  if (message?.type === "orbit-get-mode") {
+    chrome.storage.local.get("mode")
+      .then(({ mode }) => sendResponse({ ok: true, mode: VALID_MODES.includes(mode) ? mode : "full" }))
+      .catch(error => sendResponse({ ok: false, error: String(error) }));
+    return true;
+  }
+  return false;
 }
 
 chrome.runtime.onInstalled.addListener(async () => {
@@ -37,10 +62,14 @@ chrome.runtime.onStartup.addListener(async () => {
 });
 
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
-  if (message?.type === "orbit-set-mode") {
-    applyMode(message.mode)
-      .then(mode => sendResponse({ ok: true, mode }))
-      .catch(error => sendResponse({ ok: false, error: String(error) }));
-    return true;
+  handleMessage(message, sendResponse);
+  return true;
+});
+
+chrome.runtime.onMessageExternal.addListener((message, sender, sendResponse) => {
+  if (!isAllowedExternalSender(sender)) {
+    sendResponse({ ok: false, error: "Untrusted website origin." });
+    return false;
   }
+  return handleMessage(message, sendResponse);
 });
