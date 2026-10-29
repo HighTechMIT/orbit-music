@@ -1,34 +1,28 @@
 # Orbit Music
 
-Orbit Music includes a phone-first PWA and a native iOS app source project with a Safari Content Blocker extension.
+Orbit Music is a phone-first PWA for listening to music with an embedded alternative YouTube / YouTube Music audio player.
 
-## Phone web app
+## Open on your phone
 
-Published app: https://hightechmit.github.io/orbit-music/
+https://hightechmit.github.io/orbit-music/
 
 - iPhone: open the link in Safari → Share → Add to Home Screen.
 - Android: open the link in Chrome → browser menu → Install app / Add to Home Screen.
 
-The PWA provides Spotify shortcuts and saved playlist links. It cannot itself filter traffic from other apps or enable iOS Safari extensions.
+## Music player and sponsor skipping
 
-## Native iOS Safari blocker
+The page embeds [Ytify](https://ytify.pp.ua/), an independent audio player that searches YouTube and YouTube Music and supports playlists, queueing, and audio playback. If the embedded player does not load, use the **Open full music player** link in Orbit.
 
-Source project: https://github.com/HighTechMIT/orbit-music/tree/main/ios-app
+Ytify has a SponsorBlock setting for non-music content. Open the player's own Settings and enable it there. The Orbit wrapper cannot control a third-party player's settings because it is hosted on another origin.
 
-The native app opens Spotify Web Player in an SFSafariViewController (a Safari-powered view that supports Safari content blocking) and includes an ON/OFF control for a starter list of third-party ad/tracker domains.
+The alternative audio frontend does not use the official YouTube Music page, which can avoid the official video-ad player, but Orbit does not guarantee ad-free playback. Availability and behavior depend on the third-party service. The official YouTube Music button remains available as an alternative.
 
-To install on an iPhone, build and sign the project with Xcode on a Mac, choose your Apple signing team for both targets, configure the shared App Group, install the app, then enable Orbit Music Content Blocker in Settings → Apps → Safari → Extensions. See ios-app/README.md for complete instructions.
+## Important technical limitation
 
-Important limitations:
-- The Safari blocker only applies in Safari and Safari-powered browser views, not the separate Spotify app or other apps.
-- Spotify audio ads can use Spotify's own playback infrastructure; Orbit cannot guarantee that it will remove them.
-- GitHub Pages hosts the website and source instructions; it cannot install or enable the native iOS extension.
-- The included filter list is a starter list, not a comprehensive auto-updating subscription.
+Orbit's GitHub Pages code cannot intercept requests inside another origin or install browser extensions. The player is embedded from a separate service; Orbit itself is a lightweight wrapper/PWA, not a network-level ad blocker.
 
-## Desktop Chrome extension
+## Other source folders
 
-The repository also contains the optional desktop extension in chrome-extension/. For desktop Chrome, download the repository, extract it, open chrome://extensions, enable Developer mode, and select Load unpacked.
-
-## Standalone macOS source
-
-Optional native macOS source is in macos-app/. It is separate from the iPhone app.
+- `ios-app/`: optional native iOS Safari Content Blocker source project.
+- `chrome-extension/`: optional desktop Chrome extension.
+- `macos-app/`: optional native macOS source.
