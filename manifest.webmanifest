@@ -1,12 +1,12 @@
 {
   "id": "./",
-  "name": "Orbit Music — Spotify Launcher",
+  "name": "Orbit Music — Phone App",
   "short_name": "Orbit Music",
-  "description": "An installable quick-launch dashboard for Spotify Web Player.",
+  "description": "A phone-friendly Spotify launcher with optional DNS ad-filtering setup guidance.",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",
-  "orientation": "portrait-primary",
+  "orientation": "portrait",
   "background_color": "#101411",
   "theme_color": "#101411",
   "icons": [
