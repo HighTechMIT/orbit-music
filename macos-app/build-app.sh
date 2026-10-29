@@ -52,5 +52,7 @@ PLIST
 
 chmod +x "$APP_BUNDLE/Contents/MacOS/OrbitMusic"
 echo "Built: $APP_BUNDLE"
-echo "This app is unsigned. If macOS blocks it, Control-click the app in Finder and choose Open."
-open "$APP_BUNDLE"
+echo "This app is not notarized. If macOS blocks it, Control-click the app in Finder and choose Open."
+if [[ "${CI:-false}" != "true" ]]; then
+  open "$APP_BUNDLE"
+fi
