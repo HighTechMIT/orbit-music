@@ -12,15 +12,23 @@ if ! command -v swiftc >/dev/null 2>&1; then
 fi
 
 rm -rf "$APP_BUNDLE"
-mkdir -p "$APP_BUNDLE/Contents/MacOS"
+mkdir -p "$APP_BUNDLE/Contents/MacOS" "$BUILD_DIR"
+SDK_PATH="$(xcrun --sdk macosx --show-sdk-path)"
+SOURCE_FILE="$SCRIPT_DIR/Sources/OrbitMusicApp.swift"
 
-swiftc -parse-as-library -O \
-  -framework SwiftUI \
-  -framework AppKit \
-  -framework Foundation \
-  -o "$APP_BUNDLE/Contents/MacOS/OrbitMusic" \
-  "$SCRIPT_DIR/Sources/OrbitMusicApp.swift"
+swiftc -parse-as-library -O -sdk "$SDK_PATH" -target arm64-apple-macos13.0 \
+  -framework SwiftUI -framework AppKit -framework Foundation \
+  -o "$BUILD_DIR/OrbitMusic-arm64" "$SOURCE_FILE"
 
+swiftc -parse-as-library -O -sdk "$SDK_PATH" -target x86_64-apple-macos13.0 \
+  -framework SwiftUI -framework AppKit -framework Foundation \
+  -o "$BUILD_DIR/OrbitMusic-x86_64" "$SOURCE_FILE"
+
+lipo -create \
+  "$BUILD_DIR/OrbitMusic-arm64" \
+  "$BUILD_DIR/OrbitMusic-x86_64" \
+  -output "$APP_BUNDLE/Contents/MacOS/OrbitMusic"
+rm -f "$BUILD_DIR/OrbitMusic-arm64" "$BUILD_DIR/OrbitMusic-x86_64"
 cat > "$APP_BUNDLE/Contents/Info.plist" <<'PLIST'
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
