@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#101411">
-<meta name="description" content="Orbit Music is a phone-friendly Spotify launcher with optional iPhone DNS-filtering setup guidance.">
+<meta name="description" content="Orbit Music is a phone-friendly music PWA using an alternative YouTube and YouTube Music audio player.">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Orbit Music">
@@ -16,70 +16,55 @@
 :root{color-scheme:dark;--bg:#101411;--panel:#1a211d;--text:#f4f7f4;--muted:#aab6ad;--green:#1ed760;--line:#354239;--yellow:#e7d88b}
 *{box-sizing:border-box}
 body{margin:0;min-height:100vh;font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:radial-gradient(ellipse at top,#1b3023 0,var(--bg) 48rem);color:var(--text);padding-bottom:env(safe-area-inset-bottom)}
-main{width:min(680px,100%);margin:auto;padding:18px 14px 32px}
-header{display:flex;align-items:center;gap:12px;margin:7px 0 22px}
+main{width:min(760px,100%);margin:auto;padding:18px 12px 32px}
+header{display:flex;align-items:center;gap:12px;margin:7px 4px 20px}
 .logo{width:48px;height:48px;flex:0 0 auto;border-radius:16px;display:grid;place-items:center;background:var(--green);color:#07110a;font-size:26px}
 h1{font-size:1.3rem;margin:0}
 .subtitle{color:var(--muted);margin:3px 0 0;font-size:.88rem}
-.hero,.section{border:1px solid #314136;border-radius:22px;background:#171d19ef;padding:20px;margin-top:14px}
+.hero,.section{border:1px solid #314136;border-radius:22px;background:#171d19ef;padding:18px;margin-top:14px}
 .hero{background:linear-gradient(145deg,#1c3023,#151b17 75%)}
 .eyebrow{color:var(--green);text-transform:uppercase;letter-spacing:.12em;font-size:.72rem;font-weight:800}
 h2{font-size:clamp(2.2rem,10vw,3.2rem);letter-spacing:-.06em;line-height:1.02;margin:12px 0}
 h3{margin:0 0 8px;font-size:1.08rem}
 p{color:#c5d0c8;line-height:1.55;margin:8px 0 14px}
 .muted{color:var(--muted);font-size:.9rem}
-.actions,.links{display:grid;grid-template-columns:1fr 1fr;gap:9px}
+.actions{display:grid;grid-template-columns:1fr 1fr;gap:9px}
 button,.link{border:0;border-radius:15px;min-height:50px;padding:13px 14px;font:inherit;font-size:.94rem;font-weight:750;cursor:pointer;text-decoration:none;display:flex;align-items:center;justify-content:center;gap:8px;text-align:center}
 .primary{background:var(--green);color:#07110a}
 .secondary,.link{background:#2a352d;color:var(--text);border:1px solid #435247}
-input[type=url]{width:100%;border-radius:12px;border:1px solid #465349;padding:13px;background:#0f1411;color:var(--text);font:inherit;font-size:16px}
-.field{margin-top:16px}
-label{display:block;font-weight:650;margin-bottom:8px;font-size:.9rem}
+.player-frame{display:block;width:100%;height:min(70vh,780px);min-height:520px;border:0;border-radius:16px;background:#0c100d;margin-top:14px}
 .note{padding:13px;border-radius:13px;background:#24291e;border:1px solid #4b4a2d;color:#e6e1b5;font-size:.84rem;line-height:1.5;margin-top:12px}
 .install-steps{padding-left:21px;color:#c5d0c8;line-height:1.55;margin:10px 0 0}
 .install-steps li{padding:3px 0}
-a.inline{color:#9feeb7;text-underline-offset:3px;overflow-wrap:anywhere}
-.status{min-height:1.3em;color:var(--muted);font-size:.84rem;margin-top:10px;line-height:1.45}
 footer{color:#829087;font-size:.77rem;line-height:1.5;padding:20px 4px 0}
-@media(max-width:380px){.actions,.links{grid-template-columns:1fr}.hero,.section{padding:17px}h2{font-size:2.25rem}}
+@media(max-width:420px){.actions{grid-template-columns:1fr}.hero,.section{padding:15px}h2{font-size:2.3rem}.player-frame{min-height:480px;height:68vh}}
 </style>
 </head>
 <body>
 <main>
-<header><div class="logo" aria-hidden="true">♫</div><div><h1>Orbit Music</h1><p class="subtitle">Your pocket-sized Spotify launcher</p></div></header>
+<header><div class="logo" aria-hidden="true">♫</div><div><h1>Orbit Music</h1><p class="subtitle">YouTube Music search · audio player · Home Screen app</p></div></header>
 
 <section class="hero">
   <div class="eyebrow">Your music, one tap away</div>
   <h2>Press play.<br>Stay in orbit.</h2>
-  <p>Open Spotify, jump to Liked Songs, search for music, or save a playlist for quick access from your phone's Home Screen.</p>
+  <p>Orbit now uses Ytify, an independent audio player that searches YouTube and YouTube Music. The player runs inside this page when embedding is allowed.</p>
   <div class="actions">
-    <a class="link primary" href="https://open.spotify.com/" rel="noopener">▶ Open Spotify</a>
-    <a class="link secondary" href="https://open.spotify.com/collection/tracks" rel="noopener">♥ Liked Songs</a>
-  </div>
-  <div class="actions" style="margin-top:9px">
-    <a class="link secondary" href="https://open.spotify.com/search" rel="noopener">⌕ Search Spotify</a>
-    <button class="secondary" id="openSaved" type="button">Open saved playlist</button>
-  </div>
-  <div class="status" id="launchStatus" role="status" aria-live="polite"></div>
-</section>
-
-<section class="section">
-  <h3>Save your favorite playlist</h3>
-  <p class="muted">Paste a Spotify playlist, album, or artist link. It stays saved in this browser on this device.</p>
-  <div class="field">
-    <label for="destination">Spotify link</label>
-    <input id="destination" type="url" inputmode="url" autocomplete="url" placeholder="https://open.spotify.com/playlist/…">
-  </div>
-  <div class="actions" style="margin-top:10px">
-    <button class="primary" id="save" type="button">Save link</button>
-    <button class="secondary" id="clear" type="button">Clear saved link</button>
+    <a class="link primary" href="https://ytify.pp.ua/" target="_blank" rel="noopener noreferrer">Open full music player ↗</a>
+    <a class="link secondary" href="https://music.youtube.com/" target="_blank" rel="noopener noreferrer">Open official YouTube Music ↗</a>
   </div>
 </section>
 
 <section class="section">
-  <h3>Ad blocking</h3>
-  <p>Orbit can open Spotify Web Player, but a website by itself cannot block ads on another website or inside Spotify. A real blocker must run as a Safari content blocker or a device-level filter.</p>
-  <div class="note">Spotify audio ads cannot be reliably blocked by this website alone.</div>
+  <h3>Music player</h3>
+  <p class="muted">If the player area below is blank or doesn't load, use “Open full music player” above. Some services prevent being embedded inside another website.</p>
+  <iframe class="player-frame" src="https://ytify.pp.ua/" title="Orbit Music audio player powered by Ytify" allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowfullscreen loading="eager"></iframe>
+</section>
+
+<section class="section">
+  <h3>Ad and sponsor handling</h3>
+  <p>Ytify uses an alternative audio playback frontend rather than the official YouTube Music player. Its playback and ad behavior depend on that third-party service; Orbit's own JavaScript does not intercept YouTube's network requests.</p>
+  <p class="muted">Ytify includes a SponsorBlock option for skipping sponsor segments in non-music content. To use it, open the player's own Settings and enable its SponsorBlock option. It does not reliably remove ads embedded in music streams, and no third-party frontend is guaranteed to stay available or ad-free.</p>
+  <div class="note">This is an independent player, not an official Google or YouTube Music app. If you prefer the official service, use the YouTube Music button above; its ads and playback are controlled by YouTube.</div>
 </section>
 
 <section class="section">
@@ -92,51 +77,9 @@ footer{color:#829087;font-size:.77rem;line-height:1.5;padding:20px 4px 0}
   </ol>
 </section>
 
-<footer>Orbit is a Spotify launcher, not a Spotify client. Sign-in and playback are handled by Spotify. Your saved playlist link stays on this device; Orbit has no analytics backend.</footer>
+<footer>Orbit Music is a lightweight launcher and wrapper around a third-party audio player. Playback availability, content, and sponsor-skipping behavior are controlled by the player service, not by Orbit's page.</footer>
 </main>
 <script>
-const $ = id => document.getElementById(id);
-const defaultUrl = "https://open.spotify.com/";
-function validSpotifyUrl(value) {
-  try {
-    const url = new URL(value);
-    return url.protocol === "https:" && (url.hostname === "open.spotify.com" || url.hostname === "spotify.com");
-  } catch { return false; }
-}
-function getDestination() {
-  return localStorage.getItem("orbit-destination") || "";
-}
-function openDestination(url) {
-  if (!url) {
-    $("launchStatus").textContent = "Save a Spotify playlist or album link first.";
-    return;
-  }
-  if (!validSpotifyUrl(url)) {
-    $("launchStatus").textContent = "Please enter a valid https://open.spotify.com URL.";
-    return;
-  }
-  window.location.href = url;
-}
-$("destination").value = getDestination();
-$("openSaved").addEventListener("click", () => openDestination(getDestination()));
-$("save").addEventListener("click", () => {
-  const value = $("destination").value.trim();
-  if (!value) {
-    $("launchStatus").textContent = "Paste a Spotify link first.";
-    return;
-  }
-  if (!validSpotifyUrl(value)) {
-    $("launchStatus").textContent = "Use a valid https://open.spotify.com URL.";
-    return;
-  }
-  localStorage.setItem("orbit-destination", value);
-  $("launchStatus").textContent = "Saved. Your playlist is ready for next time.";
-});
-$("clear").addEventListener("click", () => {
-  localStorage.removeItem("orbit-destination");
-  $("destination").value = "";
-  $("launchStatus").textContent = "Saved Spotify link cleared.";
-});
 if ("serviceWorker" in navigator) {
   window.addEventListener("load", () => navigator.serviceWorker.register("./sw.js").catch(() => {}));
 }
