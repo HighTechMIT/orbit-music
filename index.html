@@ -1,114 +1,130 @@
 <!doctype html>
 <html lang="en">
 <head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#101411"><meta name="description" content="Orbit Music: Spotify launcher with a desktop Chrome ad-block control.">
-<link rel="manifest" href="./manifest.webmanifest"><link rel="icon" href="./icons/icon.svg" type="image/svg+xml"><title>Orbit Music</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#101411">
+<meta name="description" content="Orbit Music is a phone-friendly Spotify launcher with optional iPhone DNS-filtering setup guidance.">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Orbit Music">
+<link rel="manifest" href="./manifest.webmanifest">
+<link rel="icon" href="./icons/icon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="./icons/icon.svg">
+<title>Orbit Music</title>
 <style>
-:root{color-scheme:dark;--bg:#101411;--panel:#1a211d;--text:#f4f7f4;--muted:#aab6ad;--green:#1ed760;--line:#354239}*{box-sizing:border-box}body{margin:0;min-height:100vh;font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:radial-gradient(ellipse at top,#1b3023 0,var(--bg) 48rem);color:var(--text)}main{width:min(760px,100%);margin:auto;padding:28px 18px 36px}header{display:flex;align-items:center;gap:13px;margin:10px 0 30px}.logo{width:52px;height:52px;border-radius:17px;display:grid;place-items:center;background:var(--green);color:#07110a;font-size:27px}h1{font-size:1.35rem;margin:0}.subtitle{color:var(--muted);margin:4px 0 0;font-size:.92rem}.hero,.section{border:1px solid #314136;border-radius:24px;background:#171d19ef;padding:24px;margin-top:16px}.hero{background:linear-gradient(135deg,#1c2c21,#151b17 75%)}.eyebrow{color:var(--green);text-transform:uppercase;letter-spacing:.13em;font-size:.75rem;font-weight:800}h2{font-size:clamp(2rem,7vw,3.3rem);letter-spacing:-.06em;line-height:1.02;margin:12px 0}.hero p,.section p{color:#c5d0c8;line-height:1.55}.actions,.links{display:grid;grid-template-columns:1fr 1fr;gap:10px}button,.link{border:0;border-radius:999px;min-height:48px;padding:13px 18px;font:inherit;font-weight:750;cursor:pointer;text-decoration:none;display:flex;align-items:center;justify-content:center;gap:9px}.primary{background:var(--green);color:#07110a}.secondary,.link{background:#2a352d;color:var(--text);border:1px solid #435247}.section h3{margin:0 0 8px}.section p{color:var(--muted);font-size:.9rem}.field{margin-top:20px}label{display:block;font-weight:650;margin-bottom:8px;font-size:.9rem}input[type=url]{width:100%;border-radius:12px;border:1px solid #465349;padding:13px;background:#0f1411;color:var(--text);font:inherit}.toggle{display:flex;gap:12px;align-items:flex-start;padding:16px 0 0}.toggle input{accent-color:var(--green);width:21px;height:21px;flex:0 0 auto;margin:2px 0 0}.toggle small{display:block;color:var(--muted);margin-top:5px;line-height:1.45;font-weight:400}.status{min-height:1.3em;color:var(--muted);font-size:.85rem;margin-top:10px;line-height:1.45}.notice{margin-top:15px;padding:13px;border-radius:12px;background:#24291e;border:1px solid #4b4a2d;color:#e6e1b5;font-size:.84rem;line-height:1.5}.install-links{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}.install-links a{color:#9feeb7;font-size:.86rem;overflow-wrap:anywhere}footer{color:#829087;font-size:.78rem;line-height:1.5;padding:22px 5px 0}@media(max-width:520px){main{padding:18px 13px 28px}.actions,.links{grid-template-columns:1fr}header{margin-bottom:25px}.hero,.section{padding:20px}}
+:root{color-scheme:dark;--bg:#101411;--panel:#1a211d;--text:#f4f7f4;--muted:#aab6ad;--green:#1ed760;--line:#354239;--yellow:#e7d88b}
+*{box-sizing:border-box}
+body{margin:0;min-height:100vh;font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:radial-gradient(ellipse at top,#1b3023 0,var(--bg) 48rem);color:var(--text);padding-bottom:env(safe-area-inset-bottom)}
+main{width:min(680px,100%);margin:auto;padding:18px 14px 32px}
+header{display:flex;align-items:center;gap:12px;margin:7px 0 22px}
+.logo{width:48px;height:48px;flex:0 0 auto;border-radius:16px;display:grid;place-items:center;background:var(--green);color:#07110a;font-size:26px}
+h1{font-size:1.3rem;margin:0}
+.subtitle{color:var(--muted);margin:3px 0 0;font-size:.88rem}
+.hero,.section{border:1px solid #314136;border-radius:22px;background:#171d19ef;padding:20px;margin-top:14px}
+.hero{background:linear-gradient(145deg,#1c3023,#151b17 75%)}
+.eyebrow{color:var(--green);text-transform:uppercase;letter-spacing:.12em;font-size:.72rem;font-weight:800}
+h2{font-size:clamp(2.2rem,10vw,3.2rem);letter-spacing:-.06em;line-height:1.02;margin:12px 0}
+h3{margin:0 0 8px;font-size:1.08rem}
+p{color:#c5d0c8;line-height:1.55;margin:8px 0 14px}
+.muted{color:var(--muted);font-size:.9rem}
+.actions,.links{display:grid;grid-template-columns:1fr 1fr;gap:9px}
+button,.link{border:0;border-radius:15px;min-height:50px;padding:13px 14px;font:inherit;font-size:.94rem;font-weight:750;cursor:pointer;text-decoration:none;display:flex;align-items:center;justify-content:center;gap:8px;text-align:center}
+.primary{background:var(--green);color:#07110a}
+.secondary,.link{background:#2a352d;color:var(--text);border:1px solid #435247}
+input[type=url]{width:100%;border-radius:12px;border:1px solid #465349;padding:13px;background:#0f1411;color:var(--text);font:inherit;font-size:16px}
+.field{margin-top:16px}
+label{display:block;font-weight:650;margin-bottom:8px;font-size:.9rem}
+.note{padding:13px;border-radius:13px;background:#24291e;border:1px solid #4b4a2d;color:#e6e1b5;font-size:.84rem;line-height:1.5;margin-top:12px}
+.install-steps{padding-left:21px;color:#c5d0c8;line-height:1.55;margin:10px 0 0}
+.install-steps li{padding:3px 0}
+a.inline{color:#9feeb7;text-underline-offset:3px;overflow-wrap:anywhere}
+.status{min-height:1.3em;color:var(--muted);font-size:.84rem;margin-top:10px;line-height:1.45}
+footer{color:#829087;font-size:.77rem;line-height:1.5;padding:20px 4px 0}
+@media(max-width:380px){.actions,.links{grid-template-columns:1fr}.hero,.section{padding:17px}h2{font-size:2.25rem}}
 </style>
 </head>
-<body><main>
-<header><div class="logo" aria-hidden="true">♫</div><div><h1>Orbit Music</h1><p class="subtitle">Spotify launcher + ad-block control</p></div></header>
-<section class="hero"><div class="eyebrow">Your music, one tap away</div><h2>Press play.<br>Stay in orbit.</h2><p>Open Spotify Web Player, jump to your Liked Songs, and—on desktop Chrome—control Orbit's built-in ad and tracker blocker from this page.</p><div class="actions"><button class="primary" id="openSpotify">▶ Open Spotify</button><button class="secondary" id="openSaved">Open saved destination</button></div><div class="status" id="launchStatus" role="status" aria-live="polite"></div></section>
-<section class="section"><h3>Ad blocker</h3><p>Use this switch to turn Orbit's Chrome extension blocking on or off without opening its popup.</p>
-<label class="toggle"><input id="adblock" type="checkbox"><span><strong>Enable ad and tracker blocking</strong><small>Full mode blocks a curated list of common third-party ad/tracker domains. It does not guarantee removal of Spotify's own audio ads.</small></span></label>
-<div class="status" id="adblockStatus" role="status" aria-live="polite">Ad blocker is ready. Turn the switch on to enable protection.</div>
-<div class="install-links"><a href="https://github.com/HighTechMIT/orbit-music/tree/main/chrome-extension" target="_blank" rel="noopener noreferrer">View / install Orbit Chrome extension</a><a href="https://github.com/HighTechMIT/orbit-music/archive/refs/heads/main.zip" target="_blank" rel="noopener noreferrer">Download repository ZIP</a></div>
-<div class="notice">Important: the GitHub page itself cannot block traffic from Spotify. This switch works only in desktop Chrome when the Orbit Music Chrome extension is installed. On iPhone/iPad Safari, a PWA cannot control a Chrome extension or block ads inside the Spotify app.</div>
+<body>
+<main>
+<header><div class="logo" aria-hidden="true">♫</div><div><h1>Orbit Music</h1><p class="subtitle">Your pocket-sized Spotify launcher</p></div></header>
+
+<section class="hero">
+  <div class="eyebrow">Your music, one tap away</div>
+  <h2>Press play.<br>Stay in orbit.</h2>
+  <p>Open Spotify, jump to Liked Songs, search for music, or save a playlist for quick access from your phone's Home Screen.</p>
+  <div class="actions">
+    <a class="link primary" href="https://open.spotify.com/" rel="noopener">▶ Open Spotify</a>
+    <a class="link secondary" href="https://open.spotify.com/collection/tracks" rel="noopener">♥ Liked Songs</a>
+  </div>
+  <div class="actions" style="margin-top:9px">
+    <a class="link secondary" href="https://open.spotify.com/search" rel="noopener">⌕ Search Spotify</a>
+    <button class="secondary" id="openSaved" type="button">Open saved playlist</button>
+  </div>
+  <div class="status" id="launchStatus" role="status" aria-live="polite"></div>
 </section>
-<section class="section"><h3>Quick shortcuts</h3><p>Jump straight to your saved music or search for something new.</p><div class="links"><a class="link" href="https://open.spotify.com/collection/tracks" target="_blank" rel="noopener noreferrer">♥ Liked Songs</a><a class="link" href="https://open.spotify.com/search" target="_blank" rel="noopener noreferrer">⌕ Search Spotify</a></div>
-<div class="field"><label for="destination">Default destination (Spotify URL)</label><input id="destination" type="url" placeholder="https://open.spotify.com/playlist/…"><div class="actions" style="margin-top:10px"><button class="secondary" id="save">Save destination</button><button class="secondary" id="clear">Clear</button></div></div>
-<label class="toggle"><input id="auto" type="checkbox"><span><strong>Open Spotify when Orbit launches</strong><small>When enabled, the next app launch attempts to open your saved Spotify destination. Browser settings may still require a tap before playback starts.</small></span></label>
+
+<section class="section">
+  <h3>Save your favorite playlist</h3>
+  <p class="muted">Paste a Spotify playlist, album, or artist link. It stays saved in this browser on this device.</p>
+  <div class="field">
+    <label for="destination">Spotify link</label>
+    <input id="destination" type="url" inputmode="url" autocomplete="url" placeholder="https://open.spotify.com/playlist/…">
+  </div>
+  <div class="actions" style="margin-top:10px">
+    <button class="primary" id="save" type="button">Save link</button>
+    <button class="secondary" id="clear" type="button">Clear saved link</button>
+  </div>
 </section>
-<footer>Preferences stay in this browser. No analytics or backend. Spotify sign-in and playback are handled by Spotify.</footer>
+
+<section class="section">
+  <h3>Ad filtering on your phone</h3>
+  <p>Orbit is a Home Screen web app, so iOS does not let it change your phone's network settings or filter traffic from other apps directly.</p>
+  <p>For optional system-wide domain filtering, you can set up a DNS filtering profile from AdGuard's official public DNS page. This does not require a Chrome extension, but it changes DNS settings for your device and may conflict with some VPN configurations.</p>
+  <a class="link secondary" href="https://adguard-dns.io/en/public-dns.html" target="_blank" rel="noopener noreferrer">Set up iPhone DNS filtering ↗</a>
+  <div class="note"><strong>Spotify limitation:</strong> DNS filtering blocks some known ad and tracker domains. It cannot reliably remove Spotify's own audio ads, and Orbit's Home Screen switch cannot turn DNS filtering on or off for iOS.</div>
+</section>
+
+<section class="section">
+  <h3>Add Orbit to your Home Screen</h3>
+  <ol class="install-steps">
+    <li>Open this page in <strong>Safari</strong> on your iPhone.</li>
+    <li>Tap the <strong>Share</strong> button.</li>
+    <li>Choose <strong>Add to Home Screen</strong>. If shown, enable <strong>Open as Web App</strong>.</li>
+    <li>Tap <strong>Add</strong>. Orbit will appear alongside your other apps.</li>
+  </ol>
+</section>
+
+<footer>Orbit is a Spotify launcher, not a Spotify client. Sign-in and playback are handled by Spotify. Your saved playlist link stays on this device; Orbit has no analytics backend.</footer>
 </main>
 <script>
 const $ = id => document.getElementById(id);
 const defaultUrl = "https://open.spotify.com/";
-let lastKnownMode = null;
-
 function validSpotifyUrl(value) {
   try {
     const url = new URL(value);
     return url.protocol === "https:" && (url.hostname === "open.spotify.com" || url.hostname === "spotify.com");
-  } catch {
-    return false;
-  }
+  } catch { return false; }
 }
-
 function getDestination() {
-  return localStorage.getItem("orbit-destination") || defaultUrl;
+  return localStorage.getItem("orbit-destination") || "";
 }
-
 function openDestination(url) {
+  if (!url) {
+    $("launchStatus").textContent = "Save a Spotify playlist or album link first.";
+    return;
+  }
   if (!validSpotifyUrl(url)) {
     $("launchStatus").textContent = "Please enter a valid https://open.spotify.com URL.";
     return;
   }
-  window.open(url, "_blank", "noopener,noreferrer");
-  $("launchStatus").textContent = "Opening Spotify in a new tab.";
+  window.location.href = url;
 }
-
-function sendExtensionMessage(message) {
-  return new Promise(resolve => {
-    const requestId = `${Date.now()}-${Math.random().toString(16).slice(2)}`;
-    const timeout = window.setTimeout(() => {
-      window.removeEventListener("message", onMessage);
-      resolve({ ok: false, error: "Orbit's extension did not respond. Reload the updated extension in chrome://extensions." });
-    }, 2000);
-    function onMessage(event) {
-      if (event.source !== window || event.origin !== location.origin) return;
-      const data = event.data;
-      if (!data || data.source !== "orbit-music-extension" || data.direction !== "response" || data.id !== requestId) return;
-      window.clearTimeout(timeout);
-      window.removeEventListener("message", onMessage);
-      resolve(data.response || { ok: false, error: "Orbit extension returned no response." });
-    }
-    window.addEventListener("message", onMessage);
-    window.postMessage({
-      source: "orbit-music-page",
-      direction: "request",
-      id: requestId,
-      message
-    }, location.origin);
-  });
-}
-
-function showExtensionUnavailable(error = "") {
-  const isAppleMobile = /iPhone|iPad|iPod/i.test(navigator.userAgent);
-  if (isAppleMobile) {
-    $("adblockStatus").textContent = "This switch only controls Orbit's desktop Chrome extension. It cannot block ads in iPhone Safari or the Spotify app.";
-    return;
-  }
-  $("adblockStatus").textContent = error || "Orbit extension not responding. Update and reload the Orbit extension in chrome://extensions, then try the switch again.";
-}
-
-async function refreshAdBlockState() {
-  const result = await sendExtensionMessage({ type: "orbit-get-mode" });
-  if (!result.ok) {
-    lastKnownMode = null;
-    $("adblock").checked = false;
-    showExtensionUnavailable(result.error || "");
-    return;
-  }
-  lastKnownMode = result.mode;
-  $("adblock").checked = result.mode !== "off";
-  $("adblockStatus").textContent = result.mode === "full"
-    ? "Ad and tracker blocking is ON."
-    : result.mode === "lite"
-      ? "Lite ad and tracker blocking is ON."
-      : "Ad and tracker blocking is OFF.";
-}
-
-$("destination").value = localStorage.getItem("orbit-destination") || "";
-$("auto").checked = localStorage.getItem("orbit-auto") === "true";
-$("openSpotify").addEventListener("click", () => openDestination(defaultUrl));
+$("destination").value = getDestination();
 $("openSaved").addEventListener("click", () => openDestination(getDestination()));
 $("save").addEventListener("click", () => {
   const value = $("destination").value.trim();
   if (!value) {
-    $("launchStatus").textContent = "Enter a Spotify URL first.";
+    $("launchStatus").textContent = "Paste a Spotify link first.";
     return;
   }
   if (!validSpotifyUrl(value)) {
@@ -116,35 +132,16 @@ $("save").addEventListener("click", () => {
     return;
   }
   localStorage.setItem("orbit-destination", value);
-  $("launchStatus").textContent = "Saved your Spotify destination.";
+  $("launchStatus").textContent = "Saved. Your playlist is ready for next time.";
 });
 $("clear").addEventListener("click", () => {
   localStorage.removeItem("orbit-destination");
   $("destination").value = "";
-  $("launchStatus").textContent = "Saved destination cleared.";
+  $("launchStatus").textContent = "Saved Spotify link cleared.";
 });
-$("auto").addEventListener("change", () => {
-  localStorage.setItem("orbit-auto", $("auto").checked ? "true" : "false");
-  $("launchStatus").textContent = $("auto").checked ? "Auto-open preference enabled." : "Auto-open preference disabled.";
-});
-$("adblock").addEventListener("change", async () => {
-  const requestedMode = $("adblock").checked ? "full" : "off";
-  $("adblockStatus").textContent = "Updating Orbit's ad blocker…";
-  const result = await sendExtensionMessage({ type: "orbit-set-mode", mode: requestedMode });
-  if (!result.ok) {
-    $("adblock").checked = lastKnownMode !== null && lastKnownMode !== "off";
-    showExtensionUnavailable(result.error || "");
-    return;
-  }
-  lastKnownMode = result.mode;
-  $("adblock").checked = result.mode !== "off";
-  $("adblockStatus").textContent = result.mode === "full"
-    ? "Ad and tracker blocking is now ON."
-    : "Ad and tracker blocking is now OFF.";
-});
-
 if ("serviceWorker" in navigator) {
   window.addEventListener("load", () => navigator.serviceWorker.register("./sw.js").catch(() => {}));
 }
-refreshAdBlockState();
-</script></body></html>
+</script>
+</body>
+</html>
