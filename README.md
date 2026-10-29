@@ -21,7 +21,7 @@ The website toggle cannot block ads by itself. It only sends a message to the in
 4. Click **Load unpacked** and select the `chrome-extension` folder.
 5. Pin **Orbit Music — Spotify & Ad Shield** to the toolbar.
 
-If you had installed an earlier unpacked version before this update, remove that old extension and load the updated `chrome-extension` folder. This version has a stable extension ID so the GitHub Pages switch can communicate with it.
+If you already installed an earlier unpacked version, keep using the same extracted folder path. Replace/reload the extension from that same `chrome-extension` folder so Chrome keeps its path-based unpacked ID. The GitHub Pages switch is configured to communicate with the extension ID you supplied.
 
 The extension has Full, Lite, and Off modes, shortcuts to Spotify Liked Songs and Search, a saved Spotify destination, and an opt-in setting to open Spotify when Chrome starts.
 
