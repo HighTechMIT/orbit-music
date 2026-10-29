@@ -1,0 +1,20 @@
+{
+  "id": "./",
+  "name": "Orbit Music — Spotify Launcher",
+  "short_name": "Orbit Music",
+  "description": "An installable quick-launch dashboard for Spotify Web Player.",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "background_color": "#101411",
+  "theme_color": "#101411",
+  "icons": [
+    {
+      "src": "./icons/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ]
+}
