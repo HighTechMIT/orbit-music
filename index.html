@@ -13,7 +13,7 @@
 <section class="hero"><div class="eyebrow">Your music, one tap away</div><h2>Press play.<br>Stay in orbit.</h2><p>Open Spotify Web Player, jump to your Liked Songs, and—on desktop Chrome—control Orbit's built-in ad and tracker blocker from this page.</p><div class="actions"><button class="primary" id="openSpotify">▶ Open Spotify</button><button class="secondary" id="openSaved">Open saved destination</button></div><div class="status" id="launchStatus" role="status" aria-live="polite"></div></section>
 <section class="section"><h3>Ad blocker</h3><p>Use this switch to turn Orbit's Chrome extension blocking on or off without opening its popup.</p>
 <label class="toggle"><input id="adblock" type="checkbox"><span><strong>Enable ad and tracker blocking</strong><small>Full mode blocks a curated list of common third-party ad/tracker domains. It does not guarantee removal of Spotify's own audio ads.</small></span></label>
-<div class="status" id="adblockStatus" role="status" aria-live="polite">Checking whether the Orbit Chrome extension is available…</div>
+<div class="actions" style="margin-top:10px"><button class="secondary" id="checkConnection" type="button">Check connection</button></div><div class="status" id="adblockStatus" role="status" aria-live="polite">Checking whether the Orbit Chrome extension is available…</div>
 <div class="install-links"><a href="https://github.com/HighTechMIT/orbit-music/tree/main/chrome-extension" target="_blank" rel="noopener noreferrer">View / install Orbit Chrome extension</a><a href="https://github.com/HighTechMIT/orbit-music/archive/refs/heads/main.zip" target="_blank" rel="noopener noreferrer">Download repository ZIP</a></div>
 <div class="notice">Important: the GitHub page itself cannot block traffic from Spotify. This switch works only in desktop Chrome when the Orbit Music Chrome extension is installed. On iPhone/iPad Safari, a PWA cannot control a Chrome extension or block ads inside the Spotify app.</div>
 </section>
@@ -69,11 +69,22 @@ function sendExtensionMessage(message) {
   });
 }
 
-function showExtensionUnavailable() {
+function showExtensionUnavailable(error = "") {
   const isAppleMobile = /iPhone|iPad|iPod/i.test(navigator.userAgent);
-  $("adblockStatus").textContent = isAppleMobile
-    ? "This switch cannot control Chrome extensions on iPhone/iPad. The PWA alone cannot block Spotify ads."
-    : "Orbit's desktop Chrome extension was not detected. Install it from the link above, then reload this page.";
+  $("adblock").disabled = true;
+  if (isAppleMobile) {
+    $("adblockStatus").textContent = "This switch cannot control Chrome extensions on iPhone/iPad. The PWA alone cannot block Spotify ads.";
+    return;
+  }
+  let detail = "";
+  if (error.includes("Receiving end does not exist") || error.includes("Could not establish connection")) {
+    detail = " Chrome cannot reach the extension. Confirm Orbit is installed and enabled in this same Chrome profile, then reload it.";
+  } else if (error) {
+    detail = " Chrome reports: " + error;
+  } else if (!window.chrome || !window.chrome.runtime || typeof window.chrome.runtime.sendMessage !== "function") {
+    detail = " Chrome is not exposing extension messaging to this page.";
+  }
+  $("adblockStatus").textContent = "Orbit's desktop Chrome extension was not detected. Expected extension ID: ijoilohopmhojmjlhlegggjcomhcpmkm." + detail;
 }
 
 async function refreshAdBlockState() {
@@ -81,9 +92,10 @@ async function refreshAdBlockState() {
   if (!result.ok) {
     lastKnownMode = null;
     $("adblock").checked = false;
-    showExtensionUnavailable();
+    showExtensionUnavailable(result.error || "");
     return;
   }
+  $("adblock").disabled = false;
   lastKnownMode = result.mode;
   $("adblock").checked = result.mode !== "off";
   $("adblockStatus").textContent = result.mode === "full"
@@ -119,15 +131,18 @@ $("auto").addEventListener("change", () => {
   localStorage.setItem("orbit-auto", $("auto").checked ? "true" : "false");
   $("launchStatus").textContent = $("auto").checked ? "Auto-open preference enabled." : "Auto-open preference disabled.";
 });
+$("checkConnection").addEventListener("click", refreshAdBlockState);
+$("adblock").disabled = true;
 $("adblock").addEventListener("change", async () => {
   const requestedMode = $("adblock").checked ? "full" : "off";
   $("adblockStatus").textContent = "Updating Orbit's ad blocker…";
   const result = await sendExtensionMessage({ type: "orbit-set-mode", mode: requestedMode });
   if (!result.ok) {
     $("adblock").checked = lastKnownMode !== null && lastKnownMode !== "off";
-    showExtensionUnavailable();
+    showExtensionUnavailable(result.error || "");
     return;
   }
+  $("adblock").disabled = false;
   lastKnownMode = result.mode;
   $("adblock").checked = result.mode !== "off";
   $("adblockStatus").textContent = result.mode === "full"
