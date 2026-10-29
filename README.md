@@ -1,6 +1,6 @@
 # Orbit Music
 
-Orbit Music is a phone-first PWA for listening to music with an embedded alternative YouTube / YouTube Music audio player.
+Orbit Music is a lightweight, installable phone PWA that opens the official YouTube Music website.
 
 ## Open on your phone
 
@@ -9,17 +9,11 @@ https://hightechmit.github.io/orbit-music/
 - iPhone: open the link in Safari → Share → Add to Home Screen.
 - Android: open the link in Chrome → browser menu → Install app / Add to Home Screen.
 
-## Music player and sponsor skipping
+The Launch YouTube Music button navigates to https://music.youtube.com/ in the current tab. Sign-in, library, playlists, playback, and ads are handled by YouTube Music.
 
-The page embeds [Ytify](https://ytify.pp.ua/), an independent audio player that searches YouTube and YouTube Music and supports playlists, queueing, and audio playback. If the embedded player does not load, use the **Open full music player** link in Orbit.
+## Ad blocking limitation
 
-Ytify has a SponsorBlock setting for non-music content. Open the player's own Settings and enable it there. The Orbit wrapper cannot control a third-party player's settings because it is hosted on another origin.
-
-The alternative audio frontend does not use the official YouTube Music page, which can avoid the official video-ad player, but Orbit does not guarantee ad-free playback. Availability and behavior depend on the third-party service. The official YouTube Music button remains available as an alternative.
-
-## Important technical limitation
-
-Orbit's GitHub Pages code cannot intercept requests inside another origin or install browser extensions. The player is embedded from a separate service; Orbit itself is a lightweight wrapper/PWA, not a network-level ad blocker.
+Orbit is a GitHub Pages website and cannot intercept or modify requests made by YouTube Music after navigation. A real ad blocker must run as a browser content blocker or device-level filter. Orbit does not show a fake ON/OFF switch.
 
 ## Other source folders
 
