@@ -36,10 +36,23 @@ async function init() {
     button.setAttribute("aria-pressed", String(button.dataset.mode === mode));
     button.addEventListener("click", () => setMode(button.dataset.mode));
   });
+  $("destination").value = settings.destination || DEFAULT_DESTINATION;
   $("autoOpen").checked = Boolean(settings.autoOpen);
   $("cosmetic").checked = settings.cosmetic !== false;
   $("openSpotify").addEventListener("click", () => openSpotify(DEFAULT_DESTINATION));
-  $("openSaved").addEventListener("click", () => openSpotify(settings.destination || DEFAULT_DESTINATION));
+  $("openSaved").addEventListener("click", async () => {
+    const latest = await chrome.storage.local.get("destination");
+    await openSpotify(latest.destination || DEFAULT_DESTINATION);
+  });
+  $("saveDestination").addEventListener("click", async () => {
+    const value = $("destination").value.trim();
+    if (!validSpotifyUrl(value)) {
+      $("status").textContent = "Enter a valid https://open.spotify.com URL.";
+      return;
+    }
+    await chrome.storage.local.set({ destination: value });
+    $("status").textContent = "Spotify destination saved.";
+  });
   $("liked").addEventListener("click", () => openSpotify("https://open.spotify.com/collection/tracks"));
   $("search").addEventListener("click", () => openSpotify("https://open.spotify.com/search"));
   $("autoOpen").addEventListener("change", () => chrome.storage.local.set({ autoOpen: $("autoOpen").checked }));
