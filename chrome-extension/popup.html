@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Orbit Music</title>
+<style>
+:root{color-scheme:dark;--bg:#101411;--panel:#1b241e;--text:#f4f7f4;--muted:#aab6ad;--green:#1ed760;--border:#35473a}*{box-sizing:border-box}body{margin:0;width:330px;padding:18px;background:var(--bg);color:var(--text);font:14px system-ui,-apple-system,sans-serif}.brand{display:flex;gap:10px;align-items:center;margin-bottom:18px}.logo{height:42px;width:42px;border-radius:13px;background:var(--green);color:#061008;display:grid;place-items:center;font-size:24px;font-weight:900}.brand h1{font-size:17px;margin:0}.brand p{font-size:12px;color:var(--muted);margin:3px 0 0}.primary,.secondary{width:100%;border:0;border-radius:13px;padding:12px;font:inherit;font-weight:750;cursor:pointer}.primary{background:var(--green);color:#07110a;margin-bottom:8px}.secondary{background:#29352c;border:1px solid #405244;color:var(--text)}.panel{margin-top:14px;padding:14px;border:1px solid var(--border);border-radius:16px;background:var(--panel)}.panel h2{font-size:13px;margin:0 0 10px}.modes{display:grid;grid-template-columns:repeat(3,1fr);gap:7px}.mode{padding:9px 4px;border-radius:10px;border:1px solid #465449;background:#111712;color:var(--text);font:inherit;font-size:12px;cursor:pointer}.mode[aria-pressed=true]{background:#24452e;border-color:var(--green);color:#b9ffcc}.row{display:flex;align-items:flex-start;gap:10px;margin-top:13px;line-height:1.35}.row input{accent-color:var(--green);width:17px;height:17px;margin:2px 0 0}.row small{display:block;color:var(--muted);font-size:11px;margin-top:4px;line-height:1.4}.shortcut{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:9px}.shortcut button{background:#222c25;border:1px solid #3c4a40;color:var(--text);border-radius:10px;padding:10px 6px;font:inherit;font-size:12px;cursor:pointer}.status{min-height:17px;margin-top:10px;color:var(--muted);font-size:11px;line-height:1.4}.fine{color:#8f9d92;font-size:10px;line-height:1.45;margin:12px 1px 0}
+</style>
+</head>
+<body>
+<header class="brand"><div class="logo" aria-hidden="true">♫</div><div><h1>Orbit Music</h1><p>Spotify launcher + built-in ad shield</p></div></header>
+<button class="primary" id="openSpotify">▶ Open Spotify</button>
+<button class="secondary" id="openSaved">Open saved playlist / destination</button>
+<section class="panel">
+<h2>Protection mode</h2>
+<div class="modes">
+<button class="mode" data-mode="full" aria-pressed="true">Full</button>
+<button class="mode" data-mode="lite" aria-pressed="false">Lite</button>
+<button class="mode" data-mode="off" aria-pressed="false">Off</button>
+</div>
+<div class="status" id="status" role="status" aria-live="polite">Full protection enabled.</div>
+<label class="row"><input type="checkbox" id="autoOpen"><span><strong>Open Spotify when Chrome starts</strong><small>Opens your saved Spotify destination when Chrome starts. It does not guarantee autoplay.</small></span></label>
+</section>
+<section class="panel">
+<h2>Shortcuts</h2>
+<div class="shortcut"><button id="liked">♥ Liked Songs</button><button id="search">⌕ Search Spotify</button></div>
+<label class="row"><input type="checkbox" id="cosmetic"><span><strong>Hide labeled ad placements on Spotify</strong><small>Cosmetic filtering only; does not reliably remove audio ads inside Spotify streams.</small></span></label>
+</section>
+<p class="fine">Orbit blocks common third-party ad/tracker domains. Spotify may serve audio ads through its own playback systems, so complete Spotify ad removal is not guaranteed. Core Spotify playback domains are not blocked.</p>
+<script src="popup.js"></script>
+</body>
+</html>
