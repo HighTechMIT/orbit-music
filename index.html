@@ -13,7 +13,7 @@
 <section class="hero"><div class="eyebrow">Ready when you are</div><h2>Your music.<br>One tap away.</h2><p>Open Spotify Web Player in Chrome. If you have Voidy installed and it supports Spotify, it may work there too.</p><div class="actions"><button class="primary" id="openSpotify">▶ Open Spotify</button><button class="secondary" id="openSaved">Open saved destination</button></div><div class="status" id="status" role="status" aria-live="polite"></div></section>
 <section class="section"><h3>Quick shortcuts</h3><p>Jump straight to your saved music or search for something new.</p><div class="links"><a class="link" href="https://open.spotify.com/collection/tracks" target="_blank" rel="noopener noreferrer">♥ Liked Songs</a><a class="link" href="https://open.spotify.com/search" target="_blank" rel="noopener noreferrer">⌕ Search Spotify</a></div>
 <div class="field"><label for="destination">Default destination (Spotify URL)</label><input id="destination" type="url" placeholder="https://open.spotify.com/playlist/…"><div class="actions" style="margin-top:10px"><button class="secondary" id="save">Save destination</button><button class="secondary" id="clear">Clear</button></div></div>
-<label class="toggle"><input id="auto" type="checkbox"><span><strong>Open Spotify when Orbit launches</strong><small>When enabled, the app attempts to open your saved destination at startup. Browser settings may still require a tap before playback starts.</small></span></label>
+<label class="toggle"><input id="auto" type="checkbox"><span><strong>Open Spotify when Orbit launches</strong><small>When enabled, the next app launch redirects this app window to your saved Spotify destination. Browser and Spotify settings may still require interaction before playback starts.</small></span></label>
 <div class="notice">Orbit Music does not install or control Voidy, remove Spotify ads, or bypass Premium restrictions. Install Voidy separately in this Chrome profile. Offline mode saves only this app's interface, not music.</div></section>
 <footer>Preferences stay in this browser. No account, analytics, or backend. Spotify sign-in and playback are handled by Spotify.</footer>
 </main>
@@ -21,14 +21,14 @@
 const $=id=>document.getElementById(id);const defaultUrl='https://open.spotify.com/';
 function validSpotifyUrl(value){try{const u=new URL(value);return u.protocol==='https:'&&(u.hostname==='open.spotify.com'||u.hostname==='spotify.com')}catch{return false}}
 function getDestination(){return localStorage.getItem('orbit-destination')||defaultUrl}
-function openDestination(url){if(!validSpotifyUrl(url)){ $('status').textContent='Please enter a valid https://open.spotify.com URL.';return}window.open(url,'_blank','noopener,noreferrer');$('status').textContent='Opening Spotify in a new tab.'}
+function openDestination(url){if(!validSpotifyUrl(url)){$('status').textContent='Please enter a valid https://open.spotify.com URL.';return}window.open(url,'_blank','noopener,noreferrer');$('status').textContent='Opening Spotify in a new tab.'}
 $('destination').value=localStorage.getItem('orbit-destination')||'';
 $('auto').checked=localStorage.getItem('orbit-auto')==='true';
 $('openSpotify').addEventListener('click',()=>openDestination(defaultUrl));
 $('openSaved').addEventListener('click',()=>openDestination(getDestination()));
 $('save').addEventListener('click',()=>{const v=$('destination').value.trim();if(!v){$('status').textContent='Enter a Spotify URL first.';return}if(!validSpotifyUrl(v)){$('status').textContent='Use a valid https://open.spotify.com URL.';return}localStorage.setItem('orbit-destination',v);$('status').textContent='Saved your Spotify destination.'});
 $('clear').addEventListener('click',()=>{localStorage.removeItem('orbit-destination');$('destination').value='';$('status').textContent='Saved destination cleared.'});
-$('auto').addEventListener('change',()=>{localStorage.setItem('orbit-auto',$('auto').checked?'true':'false');$('status').textContent=$('auto').checked?'Launch preference enabled.':'Launch preference disabled.'});
-if($('auto').checked){$('status').textContent='Launch preference is on. Tap Open saved destination if your browser blocked automatic opening.'}
+$('auto').addEventListener('change',()=>{localStorage.setItem('orbit-auto',$('auto').checked?'true':'false');$('status').textContent=$('auto').checked?'Auto-open enabled. Close and reopen Orbit to try it.':'Auto-open disabled.'});
+if($('auto').checked){$('status').textContent='Auto-open is enabled. Redirecting to Spotify…';setTimeout(()=>{if(localStorage.getItem('orbit-auto')==='true')window.location.replace(getDestination())},700)}
 if('serviceWorker' in navigator){window.addEventListener('load',()=>navigator.serviceWorker.register('./sw.js').catch(()=>{}))}
 </script></body></html>
