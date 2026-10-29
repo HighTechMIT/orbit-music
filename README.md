@@ -1,44 +1,34 @@
 # Orbit Music
 
-Orbit Music is a phone-first installable PWA that provides quick Spotify links and saves a playlist destination locally in your browser.
+Orbit Music includes a phone-first PWA and a native iOS app source project with a Safari Content Blocker extension.
 
-## Open Orbit Music on your phone
+## Phone web app
 
 Published app: https://hightechmit.github.io/orbit-music/
 
-### Install on iPhone
+- iPhone: open the link in Safari → Share → Add to Home Screen.
+- Android: open the link in Chrome → browser menu → Install app / Add to Home Screen.
 
-1. Open the app link in Safari.
-2. Tap Share.
-3. Choose Add to Home Screen.
-4. If offered, enable Open as Web App, then tap Add.
+The PWA provides Spotify shortcuts and saved playlist links. It cannot itself filter traffic from other apps or enable iOS Safari extensions.
 
-Orbit will appear on your Home Screen like an app. Spotify sign-in and music playback are handled by Spotify.
+## Native iOS Safari blocker
 
-### Install on Android
+Source project: https://github.com/HighTechMIT/orbit-music/tree/main/ios-app
 
-Open the app link in Chrome, open the browser menu, and choose Install app or Add to Home screen if offered.
+The native app opens Spotify Web Player in an SFSafariViewController (a Safari-powered view that supports Safari content blocking) and includes an ON/OFF control for a starter list of third-party ad/tracker domains.
 
-## Phone ad filtering
+To install on an iPhone, build and sign the project with Xcode on a Mac, choose your Apple signing team for both targets, configure the shared App Group, install the app, then enable Orbit Music Content Blocker in Settings → Apps → Safari → Extensions. See ios-app/README.md for complete instructions.
 
-The PWA itself cannot intercept network traffic from other apps or change system DNS settings. On iPhone, the page includes a link to the official AdGuard DNS setup page for optional DNS-level filtering. That setup is separate from Orbit and requires the user to install and approve the DNS configuration in iOS Settings.
+Important limitations:
+- The Safari blocker only applies in Safari and Safari-powered browser views, not the separate Spotify app or other apps.
+- Spotify audio ads can use Spotify's own playback infrastructure; Orbit cannot guarantee that it will remove them.
+- GitHub Pages hosts the website and source instructions; it cannot install or enable the native iOS extension.
+- The included filter list is a starter list, not a comprehensive auto-updating subscription.
 
-DNS filtering can block selected ad and tracker domains, but cannot reliably remove Spotify's own audio ads. DNS profiles may also conflict with some VPN configurations.
+## Desktop Chrome extension
 
-## Desktop extension
-
-The repository still includes a Chrome extension in the chrome-extension folder for people who want Orbit's separate desktop browser-blocking features. The PWA no longer displays a desktop-extension toggle, because that control cannot function on iPhone or block traffic by itself.
-
-To install the extension in desktop Chrome:
-1. Download this repository ZIP and extract it.
-2. Open chrome://extensions.
-3. Enable Developer mode.
-4. Click Load unpacked and select the chrome-extension folder.
-
-## Privacy
-
-Saved Spotify destinations are stored in local browser storage. Orbit has no analytics backend and does not collect browsing history.
+The repository also contains the optional desktop extension in chrome-extension/. For desktop Chrome, download the repository, extract it, open chrome://extensions, enable Developer mode, and select Load unpacked.
 
 ## Standalone macOS source
 
-The optional native macOS source remains in the macos-app folder. It is separate from the phone PWA and is not needed to use Orbit on a phone.
+Optional native macOS source is in macos-app/. It is separate from the iPhone app.
