@@ -1,16 +1,27 @@
 # Orbit Music
 
-Orbit Music now has two related parts:
-- **Chrome extension (recommended for ad/tracker blocking):** one toolbar popup that launches Spotify and runs blocking rules in the background. No Voidy installation is required.
-- **PWA:** a standalone Spotify launcher published through GitHub Pages. A PWA cannot block requests made by other sites, so it cannot replace the extension for ad blocking.
+Orbit Music has two related parts:
+- **PWA / GitHub Pages website:** a Spotify launcher with an **Ad Block** switch. In desktop Chrome, the switch can control the installed Orbit Chrome extension.
+- **Chrome extension:** performs the actual network ad/tracker blocking in the background. No Voidy installation is required.
+
+## Use the Ad Block switch on the GitHub page
+
+1. Install the Chrome extension using the steps below.
+2. Open the PWA at https://hightechmit.github.io/orbit-music/ in the **same desktop Chrome profile**.
+3. Use the **Enable ad and tracker blocking** switch. It sets the extension to Full or Off mode.
+4. If the switch says the extension was not detected, reload the extension and refresh the website.
+
+The website toggle cannot block ads by itself. It only sends a message to the installed Chrome extension. It does not work from iPhone/iPad Safari or inside the Spotify app.
 
 ## Install the combined Chrome extension
 
 1. Download this repository using **Code → Download ZIP** and extract it.
-2. Open `chrome://extensions` in Chrome.
+2. Open `chrome://extensions` in desktop Chrome.
 3. Turn on **Developer mode**.
 4. Click **Load unpacked** and select the `chrome-extension` folder.
 5. Pin **Orbit Music — Spotify & Ad Shield** to the toolbar.
+
+If you had installed an earlier unpacked version before this update, remove that old extension and load the updated `chrome-extension` folder. This version has a stable extension ID so the GitHub Pages switch can communicate with it.
 
 The extension has Full, Lite, and Off modes, shortcuts to Spotify Liked Songs and Search, a saved Spotify destination, and an opt-in setting to open Spotify when Chrome starts.
 
@@ -22,10 +33,8 @@ The extension has Full, Lite, and Off modes, shortcuts to Spotify Liked Songs an
 - Full mode may break third-party widgets or analytics; switch to Lite or Off if a site stops working.
 - Settings stay in Chrome local storage; there is no analytics or browsing-history collection.
 
-## PWA version
+## PWA and GitHub Pages
 
-The PWA is published at `https://hightechmit.github.io/orbit-music/`. It can launch Spotify and provide shortcuts, but browsers isolate PWAs from other websites' network traffic. Use the Chrome extension for ad/tracker blocking.
-
-## GitHub Pages
+The PWA is published at `https://hightechmit.github.io/orbit-music/`. It can launch Spotify and provide shortcuts. A browser page cannot independently intercept another site's network traffic; ad blocking is performed by the Chrome extension.
 
 The `.github/workflows/pages.yml` workflow deploys the PWA when GitHub Pages is configured to use **GitHub Actions** as its source.
