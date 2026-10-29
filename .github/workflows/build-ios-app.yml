@@ -1,0 +1,38 @@
+name: Build Orbit Music iOS project
+on:
+  push:
+    branches: ["main"]
+    paths:
+      - "ios-app/**"
+      - ".github/workflows/build-ios-app.yml"
+  pull_request:
+    paths:
+      - "ios-app/**"
+      - ".github/workflows/build-ios-app.yml"
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  build:
+    runs-on: macos-15
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Install XcodeGen
+        run: brew install xcodegen
+      - name: Validate blocker JSON
+        run: python3 -m json.tool ios-app/OrbitSafariContentBlocker/BlockerList.json >/dev/null
+      - name: Generate Xcode project
+        run: |
+          cd ios-app
+          xcodegen generate
+      - name: Build for iOS Simulator
+        run: |
+          xcodebuild \
+            -project ios-app/OrbitMusic.xcodeproj \
+            -scheme OrbitMusic \
+            -sdk iphonesimulator \
+            -configuration Debug \
+            -derivedDataPath ios-app/build \
+            CODE_SIGNING_ALLOWED=NO \
+            build
