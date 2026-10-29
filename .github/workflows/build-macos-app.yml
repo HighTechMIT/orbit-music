@@ -22,6 +22,6 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: Orbit-Music-macOS
-          path: macos-app/build/Orbit Music.app/
+          path: macos-app/build/
           if-no-files-found: error
           retention-days: 30
